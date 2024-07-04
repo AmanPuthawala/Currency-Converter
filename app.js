@@ -10,7 +10,6 @@ const msg = document.querySelector(".msg");
 const myBaseCountry = document.querySelector(".dropdown #from");
 
 
-
 for(let select of dropdowns){
     for(let currCode in countryList){
         // console.log(codes,countryList[codes]);
@@ -77,3 +76,21 @@ btn.addEventListener("click", async (evt) => {
 });
 
 
+// just for when first time loading
+window.addEventListener("load", async() =>{
+    let amount = document.querySelector(".amount input");
+    if(amount.value === "" || amount.value < 1){
+        amount.value = "1";
+    }
+    let amtValue = amount.value;
+    console.log(amtValue);
+
+    let response = await fetch(BaseURL);
+    let data = await response.json();
+    const mySelectCountry = toCurr.value.toLowerCase(); 
+    const rate = data.eur[mySelectCountry];
+    // console.log(rate);
+
+    let finalAmount = amtValue * rate;
+    msg.innerText = `${amtValue} EUR = ${finalAmount} ${toCurr.value}`
+})
